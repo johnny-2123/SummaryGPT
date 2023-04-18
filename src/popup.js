@@ -21,13 +21,12 @@ async function extractData() {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action == "sendDataToPopup.js") {
-    // console.log(`!!!!!!!!!!!message from content received to popup.js`)
-    // console.log(request.result)
+    console.log(`!!!!!!!!!!!message from content received to popup.js`)
+    console.log(request.result)
 
     navigator.clipboard.writeText(request.result);
 
     const offenseDateElement = document.querySelector('#infoTable td:nth-child(1)');
-
 
     const offenseDate = request.result;
     offenseDateElement.innerText = offenseDate
