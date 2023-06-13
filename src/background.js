@@ -1,34 +1,45 @@
 'use strict';
-import { Readability } from '@mozilla/readability'
-import DOMPurify from 'dompurify';
 
-function readable(doc) {
-  const reader = new Readability(doc)
-  const article = reader.parse()
-  return article
-}
+require('dotenv').config();
 
-var documentClone = document.cloneNode(true);
-var article = new Readability(documentClone).parse();
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  if (request.type === 'send_article_to_background') {
 
+    let trimmed = request.payload.message
 
+    console.log(`trimmed in background.js`, trimmed);
 
-// // With background scripts you can communicate with popup
-// // and contentScript files.
-// // For more information on background script,
-// // See https://developer.chrome.com/extensions/background_pages
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.AUTHORIZATION_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            "role": "user",
+            "content": `can you summarize this text: ${trimmed}`
+          }
+        ]
+      })
+    })
 
-// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   if (request.type === 'GREETINGS') {
-//     const message = `Hi ${
-//       sender.tab ? 'Con' : 'Pop'
-//     }, my name is Bac. I am from Background. It's great to hear from you.`;
+    if (response.ok) {
+      const data = await response.json();
+      let articleContent = data.choices[0].message.content
+      console.log(`fetch request data in background script***********************`, articleContent);
 
-//     // Log message coming from the `request` parameter
-//     console.log(request.payload.message);
-//     // Send a response message
-//     sendResponse({
-//       message,
-//     });
-//   }
-// });
+      chrome.runtime.sendMessage({
+        "action": "sendDataToPopup.js",
+        "result": articleContent
+      });
+
+      return articleContent
+    }
+    else {
+      return 'Article not received#########################'
+    }
+  }
+});
