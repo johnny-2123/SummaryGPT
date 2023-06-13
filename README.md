@@ -1,11 +1,10 @@
 # <img src="public/icons/icon_48.png" width="45" align="left"> My Extension
 
-My Chrome Extension
+ArticleGPT
 
 ## Features
 
-- Feature 1
-- Feature 2
+- Get news article summaries powered by ChatGPT
 
 ## Install
 
