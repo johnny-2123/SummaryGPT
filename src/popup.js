@@ -27,7 +27,6 @@ async function extractData() {
         console.log(response);
       }
     );
-
   });
 
 

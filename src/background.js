@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request.type === 'send_article_to_background') {
@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.AUTHORIZATION_KEY}`
+        'Authorization': `Bearer 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`
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",

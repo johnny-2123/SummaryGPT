@@ -1,10 +1,11 @@
 body {
+  right: 0;
   font-family: 'Roboto', sans-serif;
   background-color: #f9f9f9;
   margin: 0;
   padding: 0;
   height: fit-content;
-  width: 30rem
+  width: 32rem
 }
 
 #summarizeContentButton {
