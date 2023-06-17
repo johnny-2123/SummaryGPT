@@ -1,13 +1,14 @@
-'use strict';
-
 require('dotenv').config();
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request.type === 'send_article_to_background') {
 
+    console.log(`request.payload.message in background.js`, request.payload.message);
+
     let trimmed = request.payload.message
 
     console.log(`trimmed in background.js`, trimmed);
+
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -25,6 +26,8 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         ]
       })
     })
+
+    console.log(`running openAI fetch request in background.js`);
 
     if (response.ok) {
       const data = await response.json();

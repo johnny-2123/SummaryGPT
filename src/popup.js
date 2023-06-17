@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 async function extractData() {
+  console.log(`extractData function running in popup.js`);
+
   chrome.storage.local.get('articleText', function (data) {
     let articleText = data.articleText;
     console.log(`Retrieved article text from local storage: ${articleText}`);
@@ -22,7 +24,7 @@ async function extractData() {
         },
       },
       (response) => {
-        console.log(response.message);
+        console.log(response);
       }
     );
 
